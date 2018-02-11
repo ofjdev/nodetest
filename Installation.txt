@@ -1,0 +1,5 @@
+1. Install Node.JS (https://nodejs.org/en/ 8.9.4 LTS)
+2. Install Express (open NodeJs command prompt -> npm install express)
+3. Use documentation from there, to develop ( https://nodejs.org/en/docs/ )
+4. Run the server on the command prompt ( node index_express.js )
+5. Open a web browser and test the Server ( http://locahost:8080 )
