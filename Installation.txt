@@ -1,5 +1,11 @@
-1. Install Node.JS (https://nodejs.org/en/ 8.9.4 LTS)
-2. Install Express (open NodeJs command prompt -> npm install express)
-3. Use documentation from there, to develop ( https://nodejs.org/en/docs/ )
-4. Run the server on the command prompt ( node index_express.js )
-5. Open a web browser and test the Server ( http://locahost:8080 )
+INSTALLATION
+1. Install Node.JS (https://nodejs.org/en/ 8.9.4 LTS) (Web Server)
+2. Install XAMP (https://www.apachefriends.org/es/index.html) (MySQL Server)
+3. Install MySQL Workbench https://www.mysql.com/products/workbench/ (MySQL Designer)
+
+DEVELOPMENT
+- Start Apache and MySQL Services
+- Import the DB ( database_design / DB_v1.0.sql ) on the PhpMyAdmin ( http://localhost/phpmyadmin/server_import.php?db= )
+- Run the server on the command prompt ( node index_express.js )
+- Open a web browser and test the Server ( http://locahost:8080 )
+- Use documentation from there, to develop ( https://nodejs.org/en/docs/ http://www.w3schools.com/nodejs )
