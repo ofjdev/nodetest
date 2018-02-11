@@ -1,6 +1,7 @@
 var express = require('express');
 var dt = require('./get_datetime');
 var url = require('url');
+var fs = require('fs')
 
 var app = express();
 var port = 8080;
@@ -70,6 +71,20 @@ app.get('/paramsYearMonth', function(req, res) {
 	// http://localhost:8080/paramsYearMonth?month=February&year=2018
 });
 
+
+// The aim to do this actually is to show How to READ a FILE.
+// A better approach to Send an HTML page is:
+// if (path.existsSync(filePath)) res.sendfile(filePath);
+app.get('/readDemoFile', function(req, res) { 
+	
+	fs.readFile('demofile1.html', function(err, data) {
+
+		res.writeHead(200, {'Content-Type': 'text/html'});
+		res.write(data); // containing the whole file text
+		res.end();
+
+	});
+});
 
 
 app.listen(port);
