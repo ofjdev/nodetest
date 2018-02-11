@@ -23,7 +23,48 @@ function formatDB_Info(){
 		 "'; DB='"+DbName+"'; Host='"+DbHost+"']";
 }
 
+// INSERT INTO `concert` (`idConcert`, `ConcertName`, `InterpretName`, `Place`, `Time`) VALUES (NULL, 'Després de tot', 'Manu Guix', 'Razmatazz', '2018-02-16 21:00:00');
+exports.getConcerts = function(callback){
+	con.connect(function(err) {
+  		if (err) callback(null); //throw err;
+  		else
+  		//Select all customers and return the result object:
+  			con.query("SELECT * FROM concert", function (err, result, fields) {
+    			if (err) callback(null); //throw err;
+    			else {
+    				//var JsonObj = getJsonFromFields(result[0], fields);
+    				//console.log("Result: ");
+    				//console.log(result);
 
+    				//console.log("Fields: ");
+    				//console.log(getFieldNames(fields));
+
+    				//console.log("Result2: ")
+    				//console.log(JsonObj);
+//    				console.log("is array?" + (R instanceof Array));
+    				//callback([JsonObj]);
+    				callback(result);
+    			}
+  			});
+	});
+}
+
+//function getFieldNames(fields){
+//	var fieldNames = [];
+//	for (var i = fields.length - 1; i >= 0; i--) {
+//		fieldNames.concat(fields[i].name);
+//	}
+//	return fieldNames;
+//}
+
+//function getJsonFromFields(result, fields){
+//	var obj = {}
+//	for (var i = fields.length - 1; i >= 0; i--) {
+//		var fieldName = fields[i].name;
+//		obj[fieldName] = result[fieldName];
+//	}
+//	return obj;
+//}
 
 exports.testConnectionDB = function(){
 	

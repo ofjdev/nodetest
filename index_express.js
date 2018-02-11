@@ -12,27 +12,43 @@ var port = 8080;
 var total_sum = 0;
 
 function response(response, text) {
-	response.writeHead(200, {'Content-Type': 'text/plain'});
+	response.writeHead(200, {'Content-Type': 'text/plain; charset=utf-8'});
 	response.write(text);
 	response.end();
 }
 
-app.get('/testDb', function(req, res) {
-	
-	try {
-		//result_ok = 
-		db.testConnectionDB();
-		// it seems that when failing and 'long wait',
-		// then it continues executing here...
-		//if(result_ok)
-			response(res, "Connection to DB Successful.");
+//'application/json; charset=utf-8'
 
-		//else response(res, "Connection to DB FAILED !!");
+/*function responseUTF8(response, text) {
+	response.writeHead(200,
+		{'Content-Type': 'text/plain; charset=utf-8'});
+	response.write(text);
+	response.end();
+}*/
+
+app.get('/concerts', function(req,res){
+	var callbackResult = function(result){
+		if(result === null || result === undefined)
+			response(res, "Error from the Server");
+		else if(!result.length)
+			response(res, "No concerts added, yet.");
+		else {
+			console.log(JSON.stringify(result));
+			response(res, JSON.stringify(result)); //result.toString() );		
+		}
+	};
+
+	db.getConcerts(callbackResult);
+});
+
+
+app.get('/testDb', function(req, res) {
+	try {
+		db.testConnectionDB();
+		response(res, "Connection to DB Successful.");
 	} catch(err){
 		response(res, "Connection to DB FAILED !!");
-		return;
 	}
-	
 });
 
 
