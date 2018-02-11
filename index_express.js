@@ -4,57 +4,68 @@ var dt = require('./get_datetime');
 var url = require('url');
 var fs = require('fs');
 var uc = require('upper-case');
+var db = require('./db');
 
 var app = express();
 var port = 8080;
 
 var total_sum = 0;
 
+function response(response, text) {
+	response.writeHead(200, {'Content-Type': 'text/plain'});
+	response.write(text);
+	response.end();
+}
+
+app.get('/testDb', function(req, res) {
+	
+	try {
+		//result_ok = 
+		db.testConnectionDB();
+		// it seems that when failing and 'long wait',
+		// then it continues executing here...
+		//if(result_ok)
+			response(res, "Connection to DB Successful.");
+
+		//else response(res, "Connection to DB FAILED !!");
+	} catch(err){
+		response(res, "Connection to DB FAILED !!");
+		return;
+	}
+	
+});
+
+
 app.get('/', function (req, res) {
-	res.writeHead(200, {'Content-Type': 'text/plain'});
-	var response = 'Hello World \n'+'with Express';
-	res.write(response);
-	res.end();
+	response(res, 'Hello World \n'+'with Express');
 });
 
 
 app.get('/uppercase', function (req, res) {
-	res.writeHead(200, {'Content-Type': 'text/plain'});
-	var response = uc('Hello World \n'+'with Express');
-	res.write(response);
-	res.end();
+	response(res, uc('Hello World \n'+'with Express'));
 });
+
 
 app.get('/sum', function (req, res) {
 	total_sum++;
-	res.writeHead(200, {'Content-Type': 'text/plain'});
-	res.write('Accepted new increment to the total Sum: '+total_sum);
-	res.end();
+	response(res, 'Accepted new increment to the total Sum: '+total_sum);
 });
 
 
 app.get('/get', function (req, res) {
-	res.writeHead(200, {'Content-Type': 'text/plain'});
-	res.write('Get to View The Sum: '+total_sum);
-	res.end();
+	response(res, 'Get to View The Sum: '+total_sum);
 });
 
 
 app.get('/datetime', function(req, res) { 
 	var datetime = dt.myDateTime();
-
-	res.writeHead(200, {'Content-Type': 'text/plain'});
-	res.write('Datetime: '+datetime);
-	res.end();
+	response(res, 'Datetime: '+datetime);
 });
 
 
 app.get('/url', function(req, res) { 
 	var URL = req.url;
-
-	res.writeHead(200, {'Content-Type': 'text/plain'});
-	res.write('Printing URL: '+URL);
-	res.end();
+	response(res, 'Printing URL: '+URL);
 });
 
 
@@ -66,13 +77,8 @@ app.get('/paramsYearMonth', function(req, res) {
 	var year = query.year; // parameter name 'year'
 	var month = query.month; // parameter name 'month'
 
-	res.writeHead(200, {'Content-Type': 'text/plain'});
-	res.write('\nPrinting URL: '+URL);
-	//res.write('\nParsed URL True, Query: '+query); THIS IS NOT POSSIBLE
-	// NOT PARSABLE TO STRING
-
-	res.write('\n(Year, Month) = '+year+' '+month);
-	res.end();
+	response(res, '\nPrinting URL: '+URL+
+				'\n(Year, Month) = '+year+' '+month);
 
 	// Tested with:
 	// http://localhost:8080/paramsYearMonth?year=123123&month=octobeeeeerfest
@@ -87,10 +93,8 @@ app.get('/readDemoFile', function(req, res) {
 	
 	fs.readFile('demofile1.html', function(err, data) {
 
-		res.writeHead(200, {'Content-Type': 'text/html'});
-		res.write(data); // containing the whole file text
-		res.write("File 'demofile1.html written to the Stream !!");
-		res.end();
+		response(res,
+			data + "\n\nFile 'demofile1.html written to the Stream !!");
 
 	});
 });
