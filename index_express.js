@@ -3,6 +3,7 @@ var express = require('express'); // improving 'http' lib
 var dt = require('./get_datetime');
 var url = require('url');
 var fs = require('fs');
+var uc = require('upper-case');
 
 var app = express();
 var port = 8080;
@@ -11,10 +12,18 @@ var total_sum = 0;
 
 app.get('/', function (req, res) {
 	res.writeHead(200, {'Content-Type': 'text/plain'});
-	res.write('Hello World \n'+'with Express');
+	var response = 'Hello World \n'+'with Express';
+	res.write(response);
 	res.end();
 });
 
+
+app.get('/uppercase', function (req, res) {
+	res.writeHead(200, {'Content-Type': 'text/plain'});
+	var response = uc('Hello World \n'+'with Express');
+	res.write(response);
+	res.end();
+});
 
 app.get('/sum', function (req, res) {
 	total_sum++;
