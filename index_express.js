@@ -23,7 +23,7 @@ app.get('/get', function (req, res) {
 	res.end('Get to View The Sum: '+total_sum)
 })
 
-app.get('/datetime', function(req, res) {
+app.get('/datetime', function(req, res) { 
 	var datetime = dt.myDateTime()
 
 	res.writeHead(200, {'Content-Type': 'text/plain'});
