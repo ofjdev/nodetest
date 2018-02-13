@@ -11,7 +11,7 @@ var port = 8080;
 
 var total_sum = 0;
 
-function response(response, text) {
+function genericResponse(response, text) {
 	response.writeHead(200, {'Content-Type': 'text/plain; charset=utf-8'});
 	response.write(text);
 	response.end();
@@ -27,15 +27,23 @@ function response(response, text) {
 }*/
 
 app.get('/concerts', function(req,res){
-	var callbackResult = function(result){
-		if(result === null || result === undefined)
-			response(res, "Error from the Server");
-		else if(!result.length)
-			response(res, "No concerts added, yet.");
+	var callbackResult = function(result, is_ok){
+
+		if ( ! is_ok ){
+			if(result === null)
+				genericResponse(res, "result === null: "+result);
+			else if(result === undefined)
+				genericResponse(res, "result === undefined: "+result);
+		}
+		
+
+		if( result.length == 0 )
+			genericResponse(res, "No concerts added, yet.");
 		else {
 			console.log(JSON.stringify(result));
-			response(res, JSON.stringify(result)); //result.toString() );		
+			genericResponse(res, JSON.stringify(result)); //result.toString() );		
 		}
+
 	};
 
 	db.getConcerts(callbackResult);
@@ -45,43 +53,43 @@ app.get('/concerts', function(req,res){
 app.get('/testDb', function(req, res) {
 	try {
 		db.testConnectionDB();
-		response(res, "Connection to DB Successful.");
+		genericResponse(res, "Connection to DB Successful.");
 	} catch(err){
-		response(res, "Connection to DB FAILED !!");
+		genericResponse(res, "Connection to DB FAILED !!");
 	}
 });
 
 
 app.get('/', function (req, res) {
-	response(res, 'Hello World \n'+'with Express');
+	genericResponse(res, 'Hello World \n'+'with Express');
 });
 
 
 app.get('/uppercase', function (req, res) {
-	response(res, uc('Hello World \n'+'with Express'));
+	genericResponse(res, uc('Hello World \n'+'with Express'));
 });
 
 
 app.get('/sum', function (req, res) {
 	total_sum++;
-	response(res, 'Accepted new increment to the total Sum: '+total_sum);
+	genericResponse(res, 'Accepted new increment to the total Sum: '+total_sum);
 });
 
 
 app.get('/get', function (req, res) {
-	response(res, 'Get to View The Sum: '+total_sum);
+	genericResponse(res, 'Get to View The Sum: '+total_sum);
 });
 
 
 app.get('/datetime', function(req, res) { 
 	var datetime = dt.myDateTime();
-	response(res, 'Datetime: '+datetime);
+	genericResponse(res, 'Datetime: '+datetime);
 });
 
 
 app.get('/url', function(req, res) { 
 	var URL = req.url;
-	response(res, 'Printing URL: '+URL);
+	genericResponse(res, 'Printing URL: '+URL);
 });
 
 
@@ -93,7 +101,7 @@ app.get('/paramsYearMonth', function(req, res) {
 	var year = query.year; // parameter name 'year'
 	var month = query.month; // parameter name 'month'
 
-	response(res, '\nPrinting URL: '+URL+
+	genericResponse(res, '\nPrinting URL: '+URL+
 				'\n(Year, Month) = '+year+' '+month);
 
 	// Tested with:
@@ -109,7 +117,7 @@ app.get('/readDemoFile', function(req, res) {
 	
 	fs.readFile('demofile1.html', function(err, data) {
 
-		response(res,
+		genericResponse(res,
 			data + "\n\nFile 'demofile1.html written to the Stream !!");
 
 	});
