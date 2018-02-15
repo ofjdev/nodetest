@@ -26,6 +26,40 @@ function genericResponse(response, text) {
 	response.end();
 }*/
 
+// http://localhost:8080/addConcert?ConcertName=nameeee&InterpretName=oscar&Place=Riudoms&Time=2018-02-16 21:00:00
+app.get('/addConcert', function(req, res) {
+
+	var params = url.parse(req.url, true).query; // true to get the Query Parameter String, already parsed
+	
+	var ConcertName 	= params.ConcertName;
+	var InterpretName 	= params.InterpretName;
+	var Place		 	= params.Place;
+	var Time 			= params.Time;
+
+	var concert = {
+		'ConcertName': 		ConcertName,
+		'InterpretName': 	InterpretName,
+		'Place': 			Place, 
+		'Time': 			Time,
+	};
+
+	var callbackResult = function(err, is_ok){
+
+		console.log("callback1: is_ok="+is_ok);
+		
+		if ( ! is_ok ){
+			genericResponse(res, "Could NOT add the Concert: "+ConcertName+
+				' because:\n'+err);
+
+		} else {
+			genericResponse(res, "Concert added successfully: "+ConcertName);
+		}
+
+	};
+
+	db.addConcert(concert, callbackResult);
+});
+
 app.get('/getConcerts', function(req,res){
 
 	var callbackResult = function(result, is_ok){
