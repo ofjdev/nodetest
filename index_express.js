@@ -26,7 +26,8 @@ function genericResponse(response, text) {
 	response.end();
 }*/
 
-app.get('/concerts', function(req,res){
+app.get('/getConcerts', function(req,res){
+
 	var callbackResult = function(result, is_ok){
 
 		if ( ! is_ok ){
@@ -34,16 +35,15 @@ app.get('/concerts', function(req,res){
 				genericResponse(res, "result === null: "+result);
 			else if(result === undefined)
 				genericResponse(res, "result === undefined: "+result);
-		}
-		
 
-		if( result.length == 0 )
-			genericResponse(res, "No concerts added, yet.");
-		else {
-			console.log(JSON.stringify(result));
-			genericResponse(res, JSON.stringify(result)); //result.toString() );		
+		} else {
+			if( result.length == 0 )
+				genericResponse(res, "No concerts added, yet.");
+			else {
+				console.log(JSON.stringify(result));
+				genericResponse(res, JSON.stringify(result)); //result.toString() );		
+			}
 		}
-
 	};
 
 	db.getConcerts(callbackResult);

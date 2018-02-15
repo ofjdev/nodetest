@@ -33,6 +33,31 @@ exports.getConcerts = function(callback){
 		else
 			callback(result, true);
 	});
+
+	//https://www.uno-de-piera.com/api-rest-con-node-js-express-y-mysql/
+	//https://stackoverflow.com/questions/14087924/cannot-enqueue-handshake-after-invoking-quit
+}
+
+exports.addConcert = function(concert, callback) {
+
+	// Example Sentence: INSERT INTO `concert` (`idConcert`, `ConcertName`, `InterpretName`, `Place`, `Time`)
+	// VALUES (NULL, 'Després de tot', 'Manu Guix', 'Razmatazz', '2018-02-16 21:00:00');
+	
+	
+	var queryStr = "INSERT INTO concert (idConcert, ConcertName, InterpretName, Place, Time) VALUES (NULL, '";
+	queryStr += concert['ConcertName'] 	 + "','";
+	queryStr += concert['InterpretName'] + "','";
+	queryStr += concert['Place'] 		 + "','";
+	queryStr += concert['Time'] 		 + "');";
+
+	console.log('DB: Insert Concert: '+queryStr);
+
+	con.query(queryStr, function (err, result, fields) {
+		if (err)
+			callback(err, false); //throw err;
+		else
+			callback(result, true); // no result
+	});
 }
 
 //function getFieldNames(fields){
